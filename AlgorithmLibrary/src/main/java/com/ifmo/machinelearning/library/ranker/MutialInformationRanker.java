@@ -33,7 +33,7 @@ public class MutialInformationRanker extends AbstractRanker {
                     .sorted((o1, o2) -> -Double.compare(iGains.get(o1), iGains.get(o2)))
                     .collect(Collectors.toList());
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 

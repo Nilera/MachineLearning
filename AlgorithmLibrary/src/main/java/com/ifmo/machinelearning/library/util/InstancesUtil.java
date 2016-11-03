@@ -25,7 +25,9 @@ public class InstancesUtil {
                 .mapToObj(sample::getAttributeName)
                 .map(Attribute::new)
                 .collect(Collectors.toCollection(ArrayList::new));
-        attributes.add(new Attribute("class"));
+        attributes.add(new Attribute("class", IntStream.range(0, sample.getClassNumber())
+                .mapToObj(String::valueOf)
+                .collect(Collectors.toList())));
 
         Instances instances = new Instances("", attributes, data.size());
         instances.setClassIndex(attributes.size() - 1);
