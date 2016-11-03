@@ -32,7 +32,7 @@ public class DecisionTree extends AbstractInstanceClassifier {
     }
 
     public void enablePruning(boolean enable) {
-        pruning = enable;
+        this.pruning = enable;
     }
 
     @Override

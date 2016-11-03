@@ -5,9 +5,11 @@ package com.ifmo.machinelearning.library.core;
  */
 public interface Instance {
 
-    public int getAttributeNumber();
-    public String getAttributeName(int i);
-    public double getAttributeValue(int i);
-    public double[] getValues();
+    int getAttributeNumber();
 
+    String getAttributeName(int i);
+
+    double getAttributeValue(int i);
+
+    double[] getValues();
 }
