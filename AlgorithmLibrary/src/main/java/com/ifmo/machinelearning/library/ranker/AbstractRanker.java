@@ -14,9 +14,13 @@ import java.util.stream.IntStream;
 public abstract class AbstractRanker {
 
     public List<Integer> rank(List<ClassifiedInstance> data) {
+        double[] values = IntStream.range(0, data.get(0).getAttributeNumber())
+                .mapToDouble(i -> rank(data, i))
+                .toArray();
+
         return IntStream.range(0, data.get(0).getAttributeNumber())
                 .boxed()
-                .sorted((o1, o2) -> -Double.compare(rank(data, o1), rank(data, o2)))
+                .sorted((o1, o2) -> -Double.compare(values[o1], values[o2]))
                 .collect(Collectors.toList());
     }
 

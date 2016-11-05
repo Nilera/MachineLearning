@@ -10,24 +10,28 @@ import java.util.stream.Collectors;
 /**
  * Created by Ivan Samborskiy on 11/4/2016.
  */
-public class FeatureSelection implements TrainingAlgorithm {
+public class FeatureSelector implements TrainingAlgorithm {
 
     private final AbstractRanker ranker;
 
     private List<ClassifiedInstance> data;
     private List<Integer> orderedAttrs;
 
-    public FeatureSelection(AbstractRanker ranker) {
+    public FeatureSelector(AbstractRanker ranker) {
         this.ranker = ranker;
     }
 
-    public FeatureSelection setData(List<ClassifiedInstance> data) {
+    public FeatureSelector setData(List<ClassifiedInstance> data) {
         this.data = data;
         return this;
     }
 
+    public List<Integer> getOrderedAttrs() {
+        return orderedAttrs;
+    }
+
     @Override
-    public FeatureSelection train() {
+    public FeatureSelector train() {
         this.orderedAttrs = ranker.rank(data);
         return this;
     }
@@ -35,5 +39,10 @@ public class FeatureSelection implements TrainingAlgorithm {
     public List<ClassifiedInstance> select(int featuresNumber) {
         int[] filter = orderedAttrs.stream().limit(featuresNumber).mapToInt(i -> i).toArray();
         return data.stream().map(instance -> new ClassifiedSubinstance(instance, filter)).collect(Collectors.toList());
+    }
+
+    public List<ClassifiedInstance> prepareTest(int featuresNumber, List<ClassifiedInstance> test) {
+        int[] filter = orderedAttrs.stream().limit(featuresNumber).mapToInt(i -> i).toArray();
+        return test.stream().map(instance -> new ClassifiedSubinstance(instance, filter)).collect(Collectors.toList());
     }
 }
