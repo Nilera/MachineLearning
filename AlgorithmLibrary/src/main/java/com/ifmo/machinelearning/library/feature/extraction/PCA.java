@@ -1,11 +1,13 @@
 package com.ifmo.machinelearning.library.feature.extraction;
 
 import com.ifmo.machinelearning.library.core.Instance;
+import com.ifmo.machinelearning.library.core.InstanceDefaultImpl;
 import com.ifmo.machinelearning.library.util.InstancesUtil;
 import org.jblas.DoubleMatrix;
 import org.jblas.Eigen;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -30,7 +32,8 @@ public class PCA extends FeatureExtractor {
     public List<Instance> extract() {
         int n = instances.get(0).getAttributeNumber();
 
-        DoubleMatrix matrix = buildCorrelationMatrix(instances);
+        List<Instance> centeredInstances = shiftInstances(instances);
+        DoubleMatrix matrix = buildCorrelationMatrix(centeredInstances);
         DoubleMatrix[] eigenmatrix = Eigen.symmetricEigenvectors(matrix);
 
         double[] ascEigenvalues = IntStream.range(0, n)
@@ -51,6 +54,23 @@ public class PCA extends FeatureExtractor {
         DoubleMatrix dataset = InstancesUtil.toMatrix(instances);
         DoubleMatrix modifiedDataset = dataset.mmul(transformationMatrix);
         return InstancesUtil.toInstances(modifiedAttributes, modifiedDataset);
+    }
+
+    private List<Instance> shiftInstances(List<Instance> instances) {
+        double[] mean = IntStream.range(0, instances.get(0).getAttributeNumber())
+                .mapToDouble(i -> instances.stream()
+                        .mapToDouble(instance -> instance.getAttributeValue(i))
+                        .average().getAsDouble())
+                .toArray();
+
+        return instances.stream()
+                .map(instance -> {
+                    double[] values = instance.getValues();
+                    for (int i = 0; i < values.length; i++) {
+                        values[i] -= mean[i];
+                    }
+                    return new InstanceDefaultImpl(attributes, values);
+                }).collect(Collectors.toList());
     }
 
     private int calculateBrokenStick(DoubleMatrix matrix, double[] ascEigenvalues) {
