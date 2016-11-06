@@ -3,6 +3,7 @@ package com.ifmo.machinelearning.master.homework1;
 import com.ifmo.machinelearning.library.classifiers.trees.GiniGain;
 import com.ifmo.machinelearning.library.core.ClassifiedInstance;
 import com.ifmo.machinelearning.library.core.InstanceCreator;
+import com.ifmo.machinelearning.library.feature.selection.FeatureSelector;
 import com.ifmo.machinelearning.library.ranker.*;
 import com.ifmo.machinelearning.library.util.InstancesUtil;
 import weka.classifiers.Classifier;

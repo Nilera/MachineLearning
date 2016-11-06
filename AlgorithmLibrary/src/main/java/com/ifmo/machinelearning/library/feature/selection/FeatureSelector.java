@@ -1,8 +1,9 @@
-package com.ifmo.machinelearning.library.ranker;
+package com.ifmo.machinelearning.library.feature.selection;
 
 import com.ifmo.machinelearning.library.core.ClassifiedInstance;
 import com.ifmo.machinelearning.library.core.ClassifiedSubinstance;
 import com.ifmo.machinelearning.library.core.TrainingAlgorithm;
+import com.ifmo.machinelearning.library.ranker.AbstractRanker;
 
 import java.util.List;
 import java.util.stream.Collectors;
